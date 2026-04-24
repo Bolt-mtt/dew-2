@@ -4,29 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Dew</title>
-    
-    <!-- SEO & Meta -->
+
     <meta name="description" content="A letter across the ocean.">
     <meta name="theme-color" content="#F4F1EB">
 
-    <!-- Fonts: Caveat for handwriting feel, Noto Serif KR for elegant Korean/English body -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* Phase 2 — Design Tokens */
         :root {
-            /* Color System */
             --color-bg: #F4F1EB;
             --color-surface: #E8E3D8;
+            --color-dark-surface: #2C2826;
             --color-primary: #2C2C2C;
             --color-accent: #B3443D;
+            --color-blush: #C97C73;
+            --color-sage: #76836F;
+            --color-sky: #A8B8C6;
+            --color-night: #241F22;
             --color-text: #3A3A3A;
             --color-muted: #848079;
             --color-photo-bg: #FCFBFA;
+            --color-paper-edge: #DED4C5;
+            --color-ink-soft: #6A625A;
 
-            /* Typography Scale */
             --font-display: 'Caveat', cursive;
             --font-body: 'Noto Serif KR', serif;
 
@@ -40,7 +42,6 @@
             --text-5xl: clamp(3rem, 2.8rem + 2vw, 4rem);
             --text-7xl: clamp(4.5rem, 4rem + 4vw, 6rem);
 
-            /* Motion */
             --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
             --duration-fast: 400ms;
             --duration-base: 800ms;
@@ -48,7 +49,6 @@
             --duration-cinematic: 2000ms;
         }
 
-        /* Reset & Base */
         * {
             margin: 0;
             padding: 0;
@@ -56,7 +56,7 @@
         }
 
         body {
-            background-color: var(--color-bg);
+            background-color: #EFEAE5;
             color: var(--color-text);
             font-family: var(--font-body);
             overflow-x: hidden;
@@ -64,7 +64,6 @@
             background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.04"/%3E%3C/svg%3E');
         }
 
-        /* Typography */
         h1, h2, h3, .display {
             font-family: var(--font-display);
             color: var(--color-primary);
@@ -91,7 +90,6 @@
             letter-spacing: -0.02em;
         }
 
-        /* Layout Structure - The Sequence */
         .chapter {
             min-height: 100vh;
             min-height: 100dvh;
@@ -100,63 +98,278 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: clamp(1.25rem, 6vw, 2.25rem);
             position: relative;
+            isolation: isolate;
+            overflow: hidden;
+        }
+
+        .chapter::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.32), rgba(255,255,255,0) 28%),
+                radial-gradient(circle at 50% 0%, rgba(179,68,61,0.06), transparent 34rem);
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .chapter::after {
+            content: '';
+            position: absolute;
+            inset: auto -18vw -18vh auto;
+            width: 58vw;
+            height: 58vw;
+            max-width: 360px;
+            max-height: 360px;
+            border-radius: 50%;
+            background: rgba(201, 124, 115, 0.18);
+            background: color-mix(in srgb, var(--chapter-glow, var(--color-blush)) 24%, transparent);
+            filter: blur(52px);
+            opacity: 0.38;
+            pointer-events: none;
+            z-index: -1;
         }
 
         .container {
-            max-width: 500px;
+            max-width: 430px;
             width: 100%;
             position: relative;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: clamp(1.25rem, 5vw, 2rem);
+            z-index: 2;
         }
 
-        /* Photo Component */
+        .hero-collage {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .hero-photo {
+            position: absolute;
+            width: min(38vw, 150px);
+            height: 26vh;
+            object-fit: cover;
+            border: 6px solid rgba(252,251,250,0.92);
+            border-radius: 8px;
+            box-shadow: 0 28px 58px rgba(36,31,34,0.18);
+            opacity: 0.62;
+            filter: sepia(8%) brightness(97%) contrast(105%);
+        }
+
+        .hero-photo:nth-child(1) {
+            top: 8vh;
+            left: 4vw;
+            transform: rotate(-10deg);
+        }
+
+        .hero-photo:nth-child(2) {
+            top: 13vh;
+            right: 4vw;
+            transform: rotate(8deg);
+        }
+
+        .hero-photo:nth-child(3) {
+            bottom: 18vh;
+            left: 50%;
+            width: min(48vw, 190px);
+            height: 22vh;
+            transform: translateX(-50%) rotate(3deg);
+        }
+
         .photo-frame {
-            background: var(--color-photo-bg);
-            padding: 12px 12px 40px 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.06), 0 5px 15px rgba(0,0,0,0.03);
+            background: rgba(252,251,250,0.96);
+            border: 1px solid rgba(44,40,38,0.08);
+            border-radius: 8px;
+            padding: 8px 8px 34px 8px;
+            box-shadow: 0 32px 70px rgba(36,31,34,0.18), 0 10px 24px rgba(46,38,31,0.08);
             position: relative;
-            width: 100%;
-            max-width: 320px;
+            width: min(88vw, 350px);
+            max-width: none;
             margin: 0 auto;
+            overflow: visible;
+        }
+
+        .photo-frame::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            width: 86px;
+            height: 24px;
+            border-radius: 2px;
+            background: rgba(232, 217, 190, 0.72);
+            box-shadow: 0 3px 10px rgba(46,38,31,0.08);
+            transform: translateX(-50%) rotate(-2deg);
+            z-index: 2;
         }
 
         .photo-frame::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border: 1px solid rgba(0,0,0,0.03);
+            left: 22px;
+            right: 22px;
+            bottom: 14px;
+            height: 1px;
+            background: var(--color-paper-edge);
+            opacity: 0.72;
             pointer-events: none;
+        }
+
+        .photo-frame[data-caption]::after {
+            content: attr(data-caption);
+            left: 16px;
+            right: 16px;
+            bottom: 9px;
+            height: auto;
+            background: none;
+            color: var(--color-accent);
+            font-family: var(--font-display);
+            font-size: var(--text-lg);
+            line-height: 1;
+            text-align: center;
+            opacity: 0.84;
         }
 
         .photo-frame img {
             width: 100%;
             height: auto;
-            aspect-ratio: 3/4;
+            aspect-ratio: var(--photo-ratio, 3/4);
             object-fit: cover;
             display: block;
-            filter: sepia(15%) brightness(95%) contrast(105%);
+            border-radius: 4px;
+            filter: sepia(10%) brightness(96%) contrast(104%);
         }
 
-        /* Alignment utilities */
+        .memory-line {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            margin: 0 auto 0.45rem;
+            color: var(--color-accent);
+            font-family: var(--font-display);
+            font-size: var(--text-lg);
+            line-height: 1;
+        }
+
+        .memory-line::before,
+        .memory-line::after {
+            content: '';
+            width: 24px;
+            height: 1px;
+            background: currentColor;
+            opacity: 0.35;
+        }
+
+        .photo-frame.is-wide {
+            width: min(90vw, 380px);
+            padding-bottom: 30px;
+        }
+
+        .photo-frame.is-wide img {
+            --photo-ratio: 16/10;
+        }
+
+        .text-block {
+            width: 100%;
+        }
+
+        .text-block .en {
+            text-wrap: balance;
+        }
+
+        .text-block .ko {
+            color: var(--color-ink-soft);
+        }
+
         .text-center { text-align: center; align-items: center; }
-        .text-left { text-align: left; align-items: flex-start; }
-        .text-right { text-align: right; align-items: flex-end; }
-        
-        .mt-auto { margin-top: auto; }
-        .mb-auto { margin-bottom: auto; }
+        .text-left   { text-align: left;   align-items: flex-start; }
+        .text-right  { text-align: right;  align-items: flex-end; }
 
-        /* specific chapter adjustments */
+        /* Quote block */
+        .quote-block {
+            border-left: 2px solid var(--color-accent);
+            padding-left: 1.25rem;
+            margin: 0.5rem 0 0.5rem 0;
+        }
+
+        .quote-block .en {
+            font-size: var(--text-xl);
+            font-style: italic;
+            color: var(--color-accent);
+        }
+
+        .quote-block .ko {
+            font-style: italic;
+        }
+
+        /* Chapter-specific rotations */
         #chap-1 .display { font-size: var(--text-7xl); }
-        
-        #chap-2 .photo-frame { transform: rotate(-3deg); }
-        #chap-3 .photo-frame { transform: rotate(2deg); margin-left: auto; }
-        #chap-4 .photo-frame { transform: rotate(-1deg); }
+        #chap-1 {
+            --chapter-glow: var(--color-sky);
+        }
 
-        /* Interactive Elements */
+        #chap-1 .display {
+            text-shadow: 0 16px 42px rgba(36,31,34,0.16);
+        }
+
+        #chap-2,
+        #chap-5 {
+            --chapter-glow: var(--color-blush);
+        }
+
+        #chap-3 {
+            background: linear-gradient(180deg, #F4F1EB 0%, #E7ECE6 100%);
+            --chapter-glow: var(--color-sage);
+        }
+
+        #chap-4,
+        #chap-6 {
+            background: linear-gradient(180deg, #EEF1F2 0%, #F4F1EB 100%);
+            --chapter-glow: var(--color-sky);
+        }
+
+        #chap-7 {
+            background:
+                radial-gradient(circle at 50% 12%, rgba(201,124,115,0.18), transparent 17rem),
+                linear-gradient(180deg, #F4F1EB 0%, #EFE6E2 100%);
+            --chapter-glow: var(--color-accent);
+        }
+
+        #chap-2 .photo-frame { transform: rotate(-2deg); }
+        #chap-3 .photo-frame { transform: rotate(1.4deg); margin-left: auto; }
+        #chap-4 .photo-frame { transform: rotate(-0.8deg); }
+        #chap-5 .photo-frame { transform: rotate(1deg); }
+        #chap-6 .photo-frame { transform: rotate(-1.2deg); margin-left: auto; }
+        #chap-7 .photo-frame { transform: rotate(1.2deg); }
+
+        /* Final dark chapter */
+        #chap-8 {
+            background:
+                radial-gradient(circle at 50% 0%, rgba(179,68,61,0.22), transparent 18rem),
+                linear-gradient(180deg, var(--color-night) 0%, #171315 100%);
+        }
+
+        #chap-8 .en {
+            color: #E8E3D8;
+        }
+
+        #chap-8 .ko {
+            color: #848079;
+        }
+
+        #chap-8 .en-big {
+            font-size: var(--text-3xl);
+            font-family: var(--font-display);
+            color: #E8E3D8;
+        }
+
+        /* Heartbeat CTA */
         .heartbeat-text {
             display: inline-flex;
             flex-direction: column;
@@ -171,6 +384,7 @@
             font-size: var(--text-5xl);
             margin: 0;
             font-family: var(--font-display);
+            color: var(--color-accent);
         }
 
         .heartbeat-text .ko {
@@ -178,7 +392,7 @@
             margin-top: 8px;
             font-weight: 300;
             opacity: 0.8;
-            color: var(--color-muted);
+            color: #848079;
         }
 
         @keyframes heartbeat {
@@ -192,17 +406,18 @@
             }
         }
 
-        /* Motion Classes */
+        /* Reveal animations */
         .reveal {
             opacity: 0;
             transform: translateY(40px);
-            transition: opacity var(--duration-slow) var(--ease-out-expo), 
+            transition: opacity var(--duration-slow) var(--ease-out-expo),
                         transform var(--duration-slow) var(--ease-out-expo);
         }
-        
+
         .reveal.delay-1 { transition-delay: 150ms; }
         .reveal.delay-2 { transition-delay: 300ms; }
         .reveal.delay-3 { transition-delay: 450ms; }
+        .reveal.delay-4 { transition-delay: 600ms; }
 
         .reveal.is-visible {
             opacity: 1;
@@ -212,13 +427,68 @@
         .reveal-scale {
             opacity: 0;
             transform: scale(0.95) translateY(20px);
-            transition: opacity var(--duration-cinematic) var(--ease-out-expo), 
+            transition: opacity var(--duration-cinematic) var(--ease-out-expo),
                         transform var(--duration-cinematic) var(--ease-out-expo);
         }
 
         .reveal-scale.is-visible {
             opacity: 1;
             transform: scale(1) translateY(0);
+        }
+
+        /* Override rotations after reveal */
+        #chap-2 .photo-frame.is-visible { transform: rotate(-2deg); }
+        #chap-3 .photo-frame.is-visible { transform: rotate(1.4deg); margin-left: auto; }
+        #chap-4 .photo-frame.is-visible { transform: rotate(-0.8deg); }
+        #chap-5 .photo-frame.is-visible { transform: rotate(1deg); }
+        #chap-6 .photo-frame.is-visible { transform: rotate(-1.2deg); margin-left: auto; }
+        #chap-7 .photo-frame.is-visible { transform: rotate(1.2deg); }
+
+        @media (max-width: 480px) {
+            .chapter {
+                min-height: 100svh;
+                justify-content: center;
+                padding-top: clamp(3.25rem, 10svh, 5.25rem);
+                padding-bottom: clamp(2rem, 8svh, 4rem);
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .hero-photo {
+                opacity: 0.66;
+            }
+
+            .photo-frame {
+                width: min(90vw, 352px);
+                padding: 7px 7px 32px 7px;
+            }
+
+            .photo-frame.is-wide {
+                width: min(91vw, 370px);
+            }
+
+            .text-center,
+            .text-left,
+            .text-right {
+                text-align: center;
+                align-items: center;
+            }
+
+            #chap-3 .photo-frame,
+            #chap-6 .photo-frame,
+            #chap-3 .photo-frame.is-visible,
+            #chap-6 .photo-frame.is-visible {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .quote-block {
+                align-self: stretch;
+                margin-left: auto;
+                margin-right: auto;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -228,8 +498,7 @@
                 transform: none !important;
             }
         }
-        
-        /* Floating particles */
+
         .particle {
             position: absolute;
             background: var(--color-accent);
@@ -238,215 +507,194 @@
             pointer-events: none;
         }
 
+        /* Divider line */
+        .divider {
+            width: 1px;
+            height: 60px;
+            background: var(--color-muted);
+            margin: 0 auto;
+            opacity: 0.3;
+        }
     </style>
 </head>
 <body>
 
-    <main id="app">
-        
-        <!-- Chapter 1: The Intro -->
-        <section id="chap-1" class="chapter text-center">
-            <div class="container text-center">
-                <div class="text-block">
-                    <h1 class="display reveal">Dew...</h1>
-                    <p class="ko reveal delay-1">듀...</p>
+<main id="app">
+
+    <!-- Chapter 1: Opening -->
+    <section id="chap-1" class="chapter text-center">
+        <div class="hero-collage" aria-hidden="true">
+            <img class="hero-photo" src="fotos/IMG_9230.JPEG" alt="" width="1330" height="2364">
+            <img class="hero-photo" src="fotos/IMG_9304.JPEG" alt="" width="2364" height="1330">
+            <img class="hero-photo" src="fotos/IMG_9227.JPEG" alt="" width="1330" height="2364">
+        </div>
+        <div class="container text-center">
+            <div class="text-block">
+                <h1 class="display">Dew...</h1>
+                <p class="en" style="font-size: var(--text-xl); color: var(--color-accent);">I kept choosing us in my head.</p>
+                <p class="ko reveal delay-1">듀...</p>
+            </div>
+        </div>
+        <div class="scroll-indicator reveal delay-3" style="position: absolute; bottom: 40px; opacity: 0.5;">
+            <p class="ko" style="font-size: var(--text-xs); font-weight: 400; color: var(--color-muted)">Scroll softly</p>
+            <div style="width: 1px; height: 40px; background: var(--color-muted); margin: 8px auto 0;"></div>
+        </div>
+    </section>
+
+    <!-- Chapter 2: The recognition — we've been here before -->
+    <section id="chap-2" class="chapter">
+        <div class="container">
+            <div class="photo-frame reveal-scale" data-caption="the part I never forgot">
+                <img src="fotos/IMG_9230.JPEG" alt="Memory" loading="lazy" width="1330" height="2364">
+            </div>
+            <div class="text-block text-center">
+                <div class="memory-line reveal delay-1">two hearts, same place</div>
+                <p class="en reveal delay-1">I know.</p>
+                <p class="en reveal delay-2" style="font-size: var(--text-xl);">We've been here before. Twice.</p>
+                <p class="en reveal delay-3" style="font-size: var(--text-xl);">And both times, we walked away.</p>
+                <p class="ko reveal delay-4">알아. 우리 이런 순간이 두 번이나 있었잖아.<br>그리고 두 번 다, 우린 등을 돌렸어.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 3: The words that stayed -->
+    <section id="chap-3" class="chapter">
+        <div class="container text-right">
+            <div class="text-block" style="margin-bottom: 2rem;">
+                <p class="en reveal" style="font-size: var(--text-xl);">But then someone said something I couldn't shake:</p>
+                <p class="ko reveal delay-1">그런데 누군가가 내 머릿속을 떠나지 않는 말을 했어:</p>
+            </div>
+            <div class="photo-frame reveal-scale delay-1" data-caption="what stayed with me">
+                <img src="fotos/IMG_0294.JPEG" alt="Memory" loading="lazy" width="1330" height="2364">
+            </div>
+            <div class="quote-block reveal delay-2" style="margin-top: 2rem; text-align: left;">
+                <p class="en">"In the future, you'll regret not having truly tried."</p>
+                <p class="ko">"나중에, 진심으로 시도하지 않은 것을 후회할 거야."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 4: The reflection -->
+    <section id="chap-4" class="chapter">
+        <div class="container">
+            <div class="photo-frame is-wide reveal-scale" data-caption="a small universe">
+                <img src="fotos/IMG_9304.JPEG" alt="Memory" loading="lazy" width="2364" height="1330">
+            </div>
+            <div class="text-block text-center">
+                <div class="memory-line reveal delay-1">I replayed everything</div>
+                <p class="en reveal delay-1">So I thought. For days.</p>
+                <p class="en reveal delay-2" style="font-size: var(--text-xl);">And I kept coming back to the same answer.</p>
+                <p class="ko reveal delay-3">그래서 며칠 동안 생각했어.<br>계속해서 같은 답으로 돌아왔어.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 5: The commitment — Korean -->
+    <section id="chap-5" class="chapter">
+        <div class="container text-left">
+            <div class="text-block" style="margin-bottom: 2rem;">
+                <p class="en reveal" style="font-size: var(--text-3xl);">I'm going to learn Korean.</p>
+                <p class="en reveal delay-1" style="font-size: var(--text-xl);">Not just words —</p>
+                <p class="en reveal delay-2" style="font-size: var(--text-xl);">the way you think, the way you see the world.</p>
+                <p class="ko reveal delay-3">나 한국어 배울 거야.<br>단어만이 아니라, 네가 생각하는 방식,<br>네가 세상을 보는 방식까지.</p>
+            </div>
+            <div class="photo-frame reveal-scale delay-2" data-caption="closer than distance">
+                <img src="fotos/IMG_9485.JPEG" alt="Memory" loading="lazy" width="1330" height="2364">
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 6: The commitment — work -->
+    <section id="chap-6" class="chapter">
+        <div class="container">
+            <div class="photo-frame is-wide reveal-scale" data-caption="worth crossing oceans for">
+                <img src="fotos/IMG_9439.JPEG" alt="Memory" loading="lazy" width="2364" height="1330">
+            </div>
+            <div class="text-block text-center">
+                <p class="en reveal delay-1">And I'm going to work harder.</p>
+                <p class="en reveal delay-2" style="font-size: var(--text-xl);">To make what I'm building here into something real.</p>
+                <p class="en reveal delay-3" style="font-size: var(--text-xl);">Something worth crossing oceans for.</p>
+                <p class="ko reveal delay-4">그리고 더 열심히 일할 거야.<br>내가 여기서 만들어가는 것들을 진짜로 만들기 위해서.<br>바다를 건너도 아깝지 않을 것으로.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 7: The real ask -->
+    <section id="chap-7" class="chapter">
+        <div class="container text-center">
+            <div class="photo-frame reveal-scale" data-caption="one more time, but real" style="margin: 0 auto 2rem;">
+                <img src="fotos/IMG_9227.JPEG" alt="Memory" loading="lazy" width="1330" height="2364">
+            </div>
+            <div class="text-block">
+                <p class="en reveal delay-1" style="font-size: var(--text-3xl);">I want to try.</p>
+                <p class="en reveal delay-2" style="font-size: var(--text-2xl);">Really try.</p>
+                <p class="en reveal delay-3" style="font-size: var(--text-xl); color: var(--color-muted);">This time differently.</p>
+                <p class="ko reveal delay-4">시도하고 싶어. 진심으로.<br>이번엔 다르게.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 8: Final CTA — dark -->
+    <section id="chap-8" class="chapter text-center">
+        <div class="container text-center">
+            <div class="text-block" style="margin-bottom: 2rem;">
+                <p class="en-big reveal" style="color: #E8E3D8; font-size: var(--text-3xl); font-family: var(--font-display);">Could we try again?</p>
+                <p class="en reveal delay-1" style="font-size: var(--text-xl); color: #848079; margin-top: 0.5rem;">One more time. For real.</p>
+                <p class="ko reveal delay-2" style="margin-top: 1rem; color: #848079; font-size: var(--text-lg);">우리 다시 한번 시도해볼 수 있을까?<br>이번엔 진심으로.</p>
+            </div>
+
+            <div class="divider reveal delay-2"></div>
+
+            <div class="reveal delay-3">
+                <div class="heartbeat-text">
+                    <span class="en">Let's talk</span>
+                    <span class="ko">우리 얘기하자</span>
                 </div>
             </div>
-            <div class="scroll-indicator reveal delay-3" style="position: absolute; bottom: 40px; opacity: 0.5;">
-                <p class="ko" style="font-size: var(--text-xs); font-weight: 400; color: var(--color-muted)">Scroll softly</p>
-                <div style="width: 1px; height: 40px; background: var(--color-muted); margin: 8px auto 0;"></div>
+
+            <div class="text-block reveal delay-4" style="margin-top: 4rem;">
+                <p style="font-size: var(--text-base); color: #5a5550;">I have so much more I'd love to share, but there's no rush.<br>We can talk whenever you're ready — maybe after your trip.</p>
+                <p style="font-size: var(--text-sm); margin-top: 0.5rem; color: #4a4540; opacity: 0.7;">하고 싶은 말이 더 많지만 서두르지 않을게.<br>네가 준비됐을 때, 여행이 끝난 후에 얘기해도 좋아.</p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Chapter 2: The Distance & Memories -->
-        <section id="chap-2" class="chapter">
-            <div class="container">
-                <div class="photo-frame reveal-scale">
-                    <!-- Placeholder using one of the existing photos -->
-                    <img src="fotos/IMG_0193.JPEG" alt="Memory" loading="lazy" width="400" height="533">
-                </div>
-                <div class="text-block text-center mt-4">
-                    <p class="en reveal delay-1">Even with oceans between us, the memories feel like yesterday.</p>
-                    <p class="ko reveal delay-2">우리 사이에 바다가 있어도, 그 기억들은 어제처럼 생생해.</p>
-                </div>
-            </div>
-        </section>
+</main>
 
-        <!-- Chapter 3: The Longing -->
-        <section id="chap-3" class="chapter">
-            <div class="container text-right">
-                <div class="text-block mb-4" style="text-align: right; margin-bottom: 2rem;">
-                    <p class="en reveal">I miss the little moments.</p>
-                    <p class="en reveal delay-1">The laughter, the quiet, the warmth.</p>
-                    <p class="ko reveal delay-2">그 작은 순간들이 그리워.<br>웃음, 고요함, 그리고 따뜻함.</p>
-                </div>
-                <div class="photo-frame reveal-scale delay-1" style="max-width: 280px;">
-                    <img src="fotos/IMG_0259.JPEG" alt="Memory" loading="lazy" width="400" height="533">
-                </div>
-            </div>
-        </section>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.2
+        };
 
-        <!-- Chapter 3.1: The Smile -->
-        <section id="chap-3-1" class="chapter">
-            <div class="container">
-                <div class="photo-frame reveal-scale" style="max-width: 300px; transform: rotate(-2deg);">
-                    <img src="fotos/IMG_0266.JPEG" alt="Memory" loading="lazy" width="400" height="533">
-                </div>
-                <div class="text-block text-center mt-4">
-                    <p class="en reveal delay-1">I still remember your smile, the way time seemed to stop when we were together.</p>
-                    <p class="ko reveal delay-2">네 미소, 그리고 우리가 함께 있을 때 시간이 멈춘 것 같았던 그 느낌을 아직도 기억해.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Chapter 4: The Reality -->
-        <section id="chap-4" class="chapter">
-            <div class="container">
-                <div class="photo-frame reveal-scale">
-                    <img src="fotos/IMG_9191.JPEG" alt="Memory" loading="lazy" width="400" height="533">
-                </div>
-                <div class="text-block text-center mt-4">
-                    <p class="en reveal delay-1">Brazil and Germany...</p>
-                    <p class="en reveal delay-2">The distance is far, but what we had was real.</p>
-                    <p class="ko reveal delay-3">브라질과 독일... 거리는 멀지만, 우리가 나눴던 건 진짜였으니까.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Chapter 4.1: The Strength -->
-        <section id="chap-4-1" class="chapter">
-            <div class="container text-left">
-                <div class="text-block mb-4">
-                    <p class="en reveal">They say distance fades feelings,</p>
-                    <p class="en reveal delay-1">but for me, it only made them stronger.</p>
-                    <p class="ko reveal delay-2">거리가 감정을 흐릿하게 만든다지만,<br>내겐 오히려 더 강하게 만들었어.</p>
-                </div>
-                <div class="photo-frame reveal-scale delay-1" style="max-width: 280px; transform: rotate(1deg);">
-                    <img src="fotos/IMG_0302.JPEG" alt="Memory" loading="lazy" width="400" height="533">
-                </div>
-            </div>
-        </section>
-
-        <!-- Chapter 4.2: The Pieces -->
-        <section id="chap-4-2" class="chapter">
-            <div class="container">
-                <div class="photo-frame reveal-scale" style="max-width: 300px; transform: rotate(-1.5deg);">
-                    <img src="fotos/IMG_9235.JPEG" alt="Memory" loading="lazy" width="400" height="533">
-                </div>
-                <div class="text-block text-center mt-4">
-                    <p class="en reveal delay-1" style="font-size: var(--text-2xl);">Every place I go, I still see pieces of you.</p>
-                    <p class="ko reveal delay-2">어디를 가든, 여전히 네 흔적들이 보여.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Chapter 4.3: The Miles -->
-        <section id="chap-4-3" class="chapter">
-            <div class="container text-right">
-                <div class="photo-frame reveal-scale" style="max-width: 260px; transform: rotate(2deg); margin-left: auto; margin-bottom: 2rem;">
-                    <img src="fotos/IMG_9697.JPEG" alt="Memory" loading="lazy" width="400" height="533">
-                </div>
-                <div class="text-block" style="text-align: right;">
-                    <p class="en reveal delay-1">I know things got hard,</p>
-                    <p class="en reveal delay-2">and the miles didn't help.</p>
-                    <p class="ko reveal delay-3">상황이 힘들었다는 거 알아,<br>멀리 떨어져 있는 것도 도움이 되지 않았겠지.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Chapter 5: The Spark -->
-        <section id="chap-5" class="chapter">
-            <div class="container text-center">
-                 <div class="photo-frame reveal-scale mb-4" style="max-width: 260px; margin: 0 auto 2rem; transform: rotate(1.5deg);">
-                    <img src="fotos/IMG_0280.JPEG" alt="Memory" loading="lazy" width="400" height="533">
-                </div>
-                <div class="text-block">
-                    <p class="en reveal delay-1" style="font-size: var(--text-3xl);">I can't let go without knowing if there is still a spark left.</p>
-                    <p class="ko reveal delay-2" style="font-size: var(--text-lg); margin-top: 1rem;">아직 작은 불꽃이라도 남아 있는지 모른 채로 포기할 수 없어.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Chapter 6: The Plea (CTA) -->
-        <section id="chap-6" class="chapter text-center" style="background-color: var(--color-surface); transition: background 1s ease;">
-            <div class="container text-center">
-                <div class="text-block mb-4">
-                    <p class="en reveal" style="font-size: var(--text-3xl); color: var(--color-accent);">Could we try again?</p>
-                    <p class="en reveal delay-1">Even from afar.</p>
-                    <p class="ko reveal delay-2" style="font-size: var(--text-lg); margin-top: 1rem;">우리 다시 시작해볼 수 있을까?<br>비록 멀리 떨어져 있더라도.</p>
-                </div>
-                
-                <div class="reveal delay-3">
-                    <div class="heartbeat-text">
-                        <span class="en">Let's talk</span>
-                        <span class="ko">우리 얘기하자</span>
-                    </div>
-                </div>
-
-                <div class="text-block mt-4 reveal delay-3" style="margin-top: 4rem;">
-                    <p class="en" style="font-size: var(--text-base); color: var(--color-muted);">I have so much more I’d love to share, but there’s no rush.<br>We can talk whenever you're ready, maybe after your trip.</p>
-                    <p class="ko" style="font-size: var(--text-sm); margin-top: 0.5rem; color: var(--color-muted); opacity: 0.8;">하고 싶은 말이 더 많지만 서두르지 않을게.<br>네가 준비됐을 때, 여행이 끝난 후에 얘기해도 좋아.</p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Motion JS -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Intersection Observer for reveals
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.25 // Reveal when 25% visible
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        // Optional: Unobserve after revealing for one-time animation
-                        // observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-
-            // Select all elements to animate
-            const revealElements = document.querySelectorAll('.reveal, .reveal-scale');
-            revealElements.forEach(el => observer.observe(el));
-
-            // Ambient Particles
-            const createParticles = () => {
-                const app = document.getElementById('app');
-                const particleCount = 15;
-                
-                for(let i = 0; i < particleCount; i++) {
-                    const particle = document.createElement('div');
-                    particle.classList.add('particle');
-                    
-                    // Random size between 2px and 6px
-                    const size = Math.random() * 4 + 2;
-                    particle.style.width = `${size}px`;
-                    particle.style.height = `${size}px`;
-                    
-                    // Random position
-                    particle.style.left = `${Math.random() * 100}vw`;
-                    particle.style.top = `${Math.random() * 100}vh`; // within first screen, then we scatter
-                    
-                    // Specific scatter across document height
-                    // Wait for layout
-                    setTimeout(() => {
-                        const docHeight = document.body.scrollHeight;
-                        particle.style.top = `${Math.random() * docHeight}px`;
-                    }, 500);
-
-                    app.appendChild(particle);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
                 }
-            };
+            });
+        }, observerOptions);
 
-            createParticles();
-        });
-    </script>
+        document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
+
+        // Ambient particles
+        const app = document.getElementById('app');
+        for (let i = 0; i < 15; i++) {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            const size = Math.random() * 4 + 2;
+            p.style.width = `${size}px`;
+            p.style.height = `${size}px`;
+            p.style.left = `${Math.random() * 100}vw`;
+            p.style.top = `${Math.random() * 100}vh`;
+            setTimeout(() => {
+                p.style.top = `${Math.random() * document.body.scrollHeight}px`;
+            }, 500);
+            app.appendChild(p);
+        }
+    });
+</script>
 </body>
 </html>
